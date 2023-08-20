@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2014 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,19 @@
  * limitations under the License.
  */
 
-function oauth2client_php_autoload($className)
-{
-    $classPath = explode('_', $className);
-    if ($classPath[0] != 'Google') {
-        return;
-    }
-    if (count($classPath) > 3) {
-        // Maximum class file path depth in this project is 3.
-        $classPath = array_slice($classPath, 0, 3);
-    }
-    $filePath = dirname(__FILE__) . '/src/' . implode('/', $classPath) . '.php';
-    if (file_exists($filePath)) {
-        require_once $filePath;
-    }
-}
+namespace Google\Auth;
 
-spl_autoload_register('oauth2client_php_autoload');
+/**
+ * An interface implemented by objects that can get quota projects.
+ */
+interface GetQuotaProjectInterface
+{
+    const X_GOOG_USER_PROJECT_HEADER = 'X-Goog-User-Project';
+
+    /**
+     * Get the quota project used for this API request
+     *
+     * @return string|null
+     */
+    public function getQuotaProject();
+}
